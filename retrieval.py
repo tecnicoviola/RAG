@@ -11,7 +11,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 load_dotenv()
 
 if __name__ == "__main__":
-    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    embeddings = HuggingFaceEmbeddings(model_name="intfloat/multilingual-e5-large")
     llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro")
     query = "Who constructed the Taj Mahal?"
 
