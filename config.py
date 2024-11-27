@@ -5,22 +5,36 @@ from pinecone import Pinecone, ServerlessSpec
 # Load environment variables from .env file
 load_dotenv()
 
-# Access the Pinecone API key and environment
+# Access the Pinecone API key from environment variables
 api_key = os.getenv("PINECONE_API_KEY")
-environment = "us-east-1"  # Example environment, update as per your setup
 
 # Check if the API key is available
 if api_key is None:
     raise ValueError("PINECONE_API_KEY not found. Please check your .env file")
 
-# Initialize Pinecone
-pc = Pinecone(api_key=api_key, environment=environment)
+# Initialize Pinecone client with the API key
+pc = Pinecone(api_key=api_key)
 
-# Now check or create index as needed
-if "basic-rag-project" not in pc.list_indexes():
+# Define the index name and configuration
+index_name = "basic-rag-project"
+dimension = 384  # Adjust this to match your embedding dimension
+metric = "cosine"  # Define the metric to be used (e.g., cosine similarity)
+
+# Define the spec for the serverless index with cloud and region
+spec = ServerlessSpec(
+    cloud="aws",  # Cloud provider
+    region="us-east-1"  # Use a valid region supported by your plan
+)
+
+# Check if the index already exists
+if index_name not in pc.list_indexes().names():
+    # Create the index
     pc.create_index(
-        name="basic-rag-project",
-        dimension=384,  # Adjust to your model's dimension
-        metric="cosine",  # Choose the appropriate metric
-        spec=ServerlessSpec(cloud="aws", region="us-east-1")
+        name=index_name,
+        dimension=dimension,
+        metric=metric,
+        spec=spec  # Provide the region and cloud provider configuration
     )
+    print(f"Index '{index_name}' created successfully.")
+else:
+    print(f"Index '{index_name}' already exists.")
