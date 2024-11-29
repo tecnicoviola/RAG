@@ -4,7 +4,7 @@ import whisper
 model = whisper.load_model("base")
 
 # Path to your audio file
-audio_path = r"C:\Users\hp\Desktop\RAG\output_material.mp3"  # Replace with your file path
+audio_path = r"C:\Users\hp\Desktop\RAG\output.mp3"  # Replace with your file path
 
 # Transcribe the audio
 result = model.transcribe(audio_path)
